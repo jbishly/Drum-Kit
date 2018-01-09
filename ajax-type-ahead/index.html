@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<form class="search-form">
+		<input type="text" class="search" placeholder="City or State">
+		<ul class="suggestions">
+			<li>Filter for a city</li>
+			<li>or a state</li>
+		</ul>
+	</form>
+
+	<script>
+	const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+	//Spread syntax allows an expression to be expanded in places where multiple arguments(for function calls) or multiple elements(for array literals) or multiple variables(for destructing assignment) are expected.
+
+	//create const variable cities
+	const cities = [];
+	//Fetch API provides an interface for fetching resources (including across the network). It will seem familiar to anyone who has used XMLHttpRequest, but the new API provides a more powerful and flexible feature set.
+	//fetch() is one of GlobalFetch API method used to start the process of fetching a resource.
+	//fetch(input, init).then(function(response) {...});
+	//var myImage = document.querySelector('.my-image');
+
+	//MDN's basic fetch example:
+	//fetch('flowers.jpg')
+  	//.then(function(response) {
+    //if (!response.ok) return new Error(response);
+    //return response.blob();
+  	//})
+  	//.then(function(myBlob) {
+    //var objectURL = URL.createObjectURL(myBlob);
+    //myImage.src = objectURL;
+    //})
+
+    //in ES6 syntax will be like:
+    //const myImage = document.querySelector('img');
+	//fetch('flowers.jpg')
+  	//.then(response => response.blob())
+  	//.then(myBlob => {
+    //const objectURL = URL.createObjectURL(myblob);
+    //myImage.src = objectURL;
+  	//});
+	fetch(endpoint)
+		.then(blob => blob.json())
+		.then(data => cities.push(...data));
+
+	function findMatches(wordToMatch, cities) {
+		return cities.filter(place => {
+	//figure out if the city/state matches what was searched
+	//const regex = new RegExp(wordToMatch, 'gi');
+	//g is for global and i is for case insensitive, wordToMatch is our variable, then do element.match(regex) or element.replace(regex).
+	//in RegExp, the match() executes for matching what we search, and then combine with Array.filter() so that we can filter out all the results that we exepect.
+	// || indicates "or" - if the city or state has either one, the filter will be much smaller
+			const regex = new RegExp(wordToMatch, 'gi');
+			return place.city.match(regex) || place.state.match(regex)
+		});
+	}
+
+	function numberWithCommas(x) {
+ 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+	//write function first and then hook it up into EventListener
+	//use findMatches function built above and run it. Use console.log(matchArray); in line 67 to get data first and show results of search. Then, replace with matchArray.map
+	function displayMatches() {
+		const matchArray = findMatches(this.value, cities);
+		//first, loop over it and map over this array
+		const html = matchArray.map(place => {
+			//create a regex, find whatever it matched in the regex and replace it with a span class of highlight and then the value the person searched for
+			const regex = new RegExp(this.value, 'gi');
+			const cityName = place.city.replace(regex, `<span class="h1">${this.value}</span>`);
+			const stateName = place.state.replace(regex, `<span class="h1">${this.value}</span>`);
+			//put the const variables cityName and stateName into <li> below
+			return `
+			<li>
+				<span class="name">${cityName}, ${stateName}</span>
+				<span class="population">${numberWithCommas(place.population)}</span>
+			</li>
+				`;
+		}).join(''); //.join turns array with multiple items into one big string
+		suggestions.innerHTML = html;
+	}
+	//selects .search and .suggestions once being searched
+	const searchInput = document.querySelector('.search');
+	const suggestions = document.querySelector('.suggestions');
+	//listen for the change event and find displayMatches
+	searchInput.addEventListener('change', displayMatches);
+	searchInput.addEventListener('keyup', displayMatches);
+
+
+	</script>
+</body>
+</html>
