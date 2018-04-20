@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after { box-sizing: inherit; }
+  div {
+    width:100%;
+    padding:100px;
+  }
+  .one {
+    background: thistle;
+  }
+  .two {
+    background:mistyrose;
+  }
+  .three {
+    background:coral;
+  }
+</style>
+
+<button></button>
+<script>
+
+  /* The event.stopPropagation() prevents further propagation of the current event in the capturing and bubbling phases.
+
+  To bubble up means that it triggers the events as you go up to the top of document and trigger those elements as well, so use e.stopPropagation(); to stop bubbling that event up. */
+
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    // console.log(this);
+    // e.stopPropagation(); //stop bubbling!
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false
+    once: true
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('Click!!!');
+  }, {
+    once: true
+  });
+
+  //once is a boolean indicating that the listener should be invoked only once after being added. If it is true, the listener would be removed automatically when it is invoked. Good for checkout.
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
