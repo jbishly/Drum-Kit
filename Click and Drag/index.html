@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Click and Drag</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="items">
+    <div class="item item1">01</div>
+    <div class="item item2">02</div>
+    <div class="item item3">03</div>
+    <div class="item item4">04</div>
+    <div class="item item5">05</div>
+    <div class="item item6">06</div>
+    <div class="item item7">07</div>
+    <div class="item item8">08</div>
+    <div class="item item9">09</div>
+    <div class="item item10">10</div>
+    <div class="item item11">11</div>
+    <div class="item item12">12</div>
+    <div class="item item13">13</div>
+    <div class="item item14">14</div>
+    <div class="item item15">15</div>
+    <div class="item item16">16</div>
+    <div class="item item17">17</div>
+    <div class="item item18">18</div>
+    <div class="item item19">19</div>
+    <div class="item item20">20</div>
+    <div class="item item21">21</div>
+    <div class="item item22">22</div>
+    <div class="item item23">23</div>
+    <div class="item item24">24</div>
+    <div class="item item25">25</div>
+  </div>
+
+<script>
+    //define variables we need
+    const slider = document.querySelector('.items');
+    let isDown = false; //mouse is clicked down or not
+    let startX; //start point from the slider
+    let scrollLeft; //store slider's scrollLeft when scroll occurs
+
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true; //set true when mouse is down
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft; 
+        /* prevent initial start point of slider to start from 0 of page (maybe there is padding or margin around slider) so we need to subtract the value of to get the real point of position to know where it was initially clicked */
+        scrollLeft = slider.scrollLeft;
+        console.log(e.pageX);
+    });
+
+    slider.addEventListener('mouseleave', (e) => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mouseup', (e) => {
+        isDown = false;
+        slider.classList.add('active');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if(!isDown) return; // stop the fn from running if mouse not down
+        //console.count(isDown);    
+        //console.log(startX);
+        e.preventDefault(); //stop the browser to think we might want to select text
+        /* figure out where cursor is when moving, same function as 'mousedown' || reference point was in 'mousedown'*/
+        const x = e.pageX - slider.offsetLeft; 
+        //console.log({x, startX}); //shows where the cursor is moving
+        const walk = (x - startX) * 3; // shows how far we deviated from the initial point, with *3 px more to make slider scroll quickly
+        //console.log(walk); shows how far to the right/left you are
+        slider.scrollLeft = scrollLeft - walk;
+        //slider.scrollLeft = walk; is still jumpy, so recalculating like slider.scrollLeft = scrollLeft - walk; can fix it
+    });
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
