@@ -107,10 +107,12 @@ body {
 video::-webkit-media-controls-enclosure {
 display:none !important;
 }
-
 /*.custom-video-controls {
 z-index: 2147483648;
 }*/
+
+
+
 
 /* unholy css to style input type="range" */
 
