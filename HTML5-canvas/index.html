@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HTML 5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+//Canvas is added in HTML5, the HTML <canvas> element can be used to draw graphics via scripting in JavaScript. It's also used by WebGL to draw hardware-accelerated 3D.	
+//grab the canvas first
+const canvas = document.querySelector('#draw'); //next, grab the context (we draw on something called context)
+const ctx = canvas.getContext('2d'); //resize our canvas before we do any of our drawings - by default set in body
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+//ctx.strokeStyle: specifies the color or style to use for the lines around shapes. The default is #000 (black).
+ctx.strokeStyle ='#BADA55'; 
+//ctx.lineJoin: determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together), bevel | round | miter.
+ctx.lineJoin = 'round';
+//ctx.lineCap: the shape of the stroke, round | butt | square.
+ctx.lineCap ='round';
+//ctx.lineWidth: sets the thickness of lines in space units.
+ctx.lineWidth = 60;
+//ctx.globalCompositeOperation = 'destination-atop'; //blends the colors
+
+let isDrawing = false;
+let lastX = 0; //have to tell when it starts and ends
+let lastY = 0; //have to tell when it starts and ends
+let hue = 0;
+let direction = true; //building up
+
+function draw(e) {
+	if (!isDrawing) return; //stop the fn from not running when they are not moused down
+	console.log(e);
+	//ctx.beginPath(): starts a new path by emptying the list of sub-paths. Call this method when you want to create a new path.
+	ctx.beginPath();
+	//start from, ctx.moveTo(): moves the starting point of a new sub-path to the (x, y) coordinates.
+	ctx.moveTo(lastX, lastY);
+	//go to, ctx.lineTo(): connects the last point in the sub-path to the x, y coordinates with a straight line (but does not actually draw it)
+	ctx.lineTo(e.offsetX, e.offsetY); //coming from actual event that happened
+	//ctx.stroke(): strokes the current or given path with the current stroke style using the non-zero winding rule. 
+	ctx.stroke();
+	//when we are done with the draw function, we want to update the lastX and the lastY to the variables to be whereever they were
+	[lastX, lastY] = [e.offsetX, e.offsetY]; 
+	//Hue-saturation-lightness model using the hsl() function notation.
+	ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; 
+	hue++;
+	if (hue >= 360) {
+		hue = 0;
+	}
+	if(ctx.lineWidth >= 60 || ctx.lineWidth <= 1) { //if it's greater than 100 then flip the direction, if less than 1 then flip direction
+		direction = !direction;
+	}
+	if(direction) {
+		ctx.lineWidth++; //increment lineWidth 0 - 100
+	} else {
+		ctx.lineWidth--; //decrement
+	}
+}
+//listen for the mouse move event on the canvas
+//before we make a 'mousemove' we want to update the lastX, lastY rather than starting at 0
+canvas.addEventListener('mousedown', (e) => {
+	isDrawing = true; //ready to draw when mouse is down
+	[lastX, lastY] = [e.offsetX, e.offsetY];
+});
+
+canvas.addEventListener('mousemove', draw); //drawing when mouse move
+canvas.addEventListener('mouseup', () => isDrawing = false); //stop drawing when mouse up
+canvas.addEventListener('mouseout', () => isDrawing = false); //stop drawing when mouse is out of canvas
+
+</script>
+
+<style>
+	html, body {
+		margin: 0;
+	}
+</style>
+
+
+</body>
+</html>
