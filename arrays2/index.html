@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Array Cardio 💪💪</title>
+</head>
+
+<body>
+	<p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+	<script>
+		// ## Array Cardio Day 2
+
+	const people = [
+      { name: 'Wes', year: 1988 },
+      { name: 'Kait', year: 1986 },
+      { name: 'Irv', year: 1970 },
+      { name: 'Lux', year: 2015 }
+	];
+
+	const comments = [
+      { text: 'Love this!', id: 523423 },
+      { text: 'Super good', id: 823423 },
+      { text: 'You are the best', id: 2039842 },
+      { text: 'Ramen is my fav food ever', id: 123523 },
+      { text: 'Nice Nice Nice!', id: 542328 }
+    ];
+
+    // Some and Every Checks
+    //The some() method tests whether some element in the array passes the test implemented by the provided function. Wich means that it checks at least one thing in the array meets what you're looking for. just like OR operation. 
+
+    //Array.prototype.some() // is at least one person 19 or older?
+    //[NOTICE]: getFullYear() is a function of Date, not a property.
+
+    //const isAdult = people.some(function(person) {
+    	//const currentYear = (new Date()).getFullYear();
+    	//if(currentYear - person.year >= 19) {
+    		//return true;
+    	//}
+    //});
+
+    //OR
+
+    //const isAdult = people.some(person => {
+    	//const currentYear = (new Date()).getFullYear();
+    	//return currentYear - person.year >= 19;
+    //}
+
+    //OR
+    
+    const isAdult = people.some(person => (new Date()).getFullYear() - person.year >= 19);
+    //console.log({allAdult})  gives the allAdult object itself vs. console.log(allAdult) gives the value of allAdult variable
+    console.log({isAdult});
+
+    // Array.prototype.every() // is everyone 19 or older?
+    //The every() method tests whether all elements in the array pass the test implemented by the provided function. like AND operation.
+    const allAdults = people.every(person => (new Date()).getFullYear() - person.year >= 19);
+
+    console.log({allAdults});
+
+    // Array.prototype.find()
+    // Find is like filter, but instead returns just the one you are looking for
+    //The find() method returns a value of the first element in the array that satisfies the provided testing function. Otherwise undefined is returned.
+    // find the comment with the ID of 823423
+
+    //const comment = comments.find(function (comment) {
+    	//if(comment.id === 823423) {
+    		//return true;
+    	//}
+    //});
+    const comment = comments.find(comment => comment.id === 823423);
+
+    console.log(comment);
+
+    // Array.prototype.findIndex()
+    //The findIndex() method returns an index of the first element in the array that satisfies the provided testing function. Otherwise -1 is returned.
+    // Find the comment with this ID
+    // delete the comment with the ID of 823423
+	const index = comments.findIndex(comment => comment.id === 823423);
+
+    console.log(index);
+    //The splice() method changes the content of an array by removing existing elements and/or adding new elements.
+    comments.splice(index, 1); //will change content of the origin array. In console type in console.table(comments);
+    //OR like in Redux:
+    //const newComments = [
+    //...comments.slice(0, index),
+    //...comments.slice(index + 1)
+    //]; then in console type in console.table(newComments);
+
+	</script>
+</body>
