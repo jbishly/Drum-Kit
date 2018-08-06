@@ -55,8 +55,8 @@
 	//g is for global and i is for case insensitive, wordToMatch is our variable, then do element.match(regex) or element.replace(regex).
 	//in RegExp, the match() executes for matching what we search, and then combine with Array.filter() so that we can filter out all the results that we exepect.
 	// || indicates "or" - if the city or state has either one, the filter will be much smaller
-			const regex = new RegExp(wordToMatch, 'gi');
-			return place.city.match(regex) || place.state.match(regex)
+		const regex = new RegExp(wordToMatch, 'gi');
+		return place.city.match(regex) || place.state.match(regex)
 		});
 	}
 
